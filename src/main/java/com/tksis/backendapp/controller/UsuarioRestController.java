@@ -36,12 +36,17 @@ public class UsuarioRestController {
 		return "Hola";
 	}
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public List<Usuario> index(){
 		return usuarioService.findAll();
 	}
 	
-	@PostMapping("/")
+	@GetMapping("/{id}")
+	public Usuario show(@PathVariable String id) {
+		return this.usuarioService.findById(id);
+	}
+	
+	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario create(@RequestBody Usuario usuario) {
 		usuario.setClave(passwordEncoder.encode(usuario.getClave()));

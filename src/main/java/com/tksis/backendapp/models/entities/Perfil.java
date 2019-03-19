@@ -2,6 +2,9 @@ package com.tksis.backendapp.models.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 
@@ -22,6 +25,7 @@ public class Perfil implements Serializable {
 
 	//bi-directional many-to-many association to Rol
 	@ManyToMany
+	@JsonIgnoreProperties("perfils")
 	@JoinTable(
 		name="perfilrol"
 		, joinColumns={
@@ -35,6 +39,7 @@ public class Perfil implements Serializable {
 
 	//bi-directional many-to-many association to Usuario
 	@ManyToMany(mappedBy="perfils")
+	@JsonIgnoreProperties("perfils")
 	private List<Usuario> usuarios;
 
 	public Perfil() {

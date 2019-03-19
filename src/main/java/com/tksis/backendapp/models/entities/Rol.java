@@ -2,6 +2,9 @@ package com.tksis.backendapp.models.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 
@@ -22,10 +25,12 @@ public class Rol implements Serializable {
 
 	//bi-directional many-to-many association to Perfil
 	@ManyToMany(mappedBy="rols")
+	@JsonIgnoreProperties("rols")
 	private List<Perfil> perfils;
 
 	//bi-directional many-to-many association to Usuario
 	@ManyToMany(mappedBy="rols")
+	@JsonIgnoreProperties("rols")
 	private List<Usuario> usuarios;
 
 	public Rol() {
