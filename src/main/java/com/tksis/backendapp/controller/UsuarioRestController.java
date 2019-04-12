@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tksis.backendapp.models.entities.Rol;
 import com.tksis.backendapp.models.entities.Usuario;
+import com.tksis.backendapp.models.service.IRolService;
 import com.tksis.backendapp.models.service.IUsuarioService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -27,6 +29,9 @@ public class UsuarioRestController {
 	
 	@Autowired
 	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private IRolService rolService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -61,6 +66,30 @@ public class UsuarioRestController {
 		currentUsuario.setNombre(usuario.getNombre());
 		currentUsuario.setEmail(usuario.getEmail());
 		currentUsuario.setClave(usuario.getClave());
+		this.usuarioService.save(currentUsuario);
+		return currentUsuario;
+	}
+	
+	@PutMapping("/roles/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Usuario update(@RequestBody List<Rol> rol, @PathVariable String id) {
+		Usuario currentUsuario = this.usuarioService.findById(id);
+		
+		currentUsuario.getRols().clear();
+		this.usuarioService.save(currentUsuario);
+		
+		for(int i = 0; i<rol.size(); i++) {
+			Rol r = this.rolService.findById(rol.get(i).getId());
+			currentUsuario.getRols().add(r);
+			
+		}
+		
+		/*
+		currentUsuario.setNombre(usuario.getNombre());
+		currentUsuario.setEmail(usuario.getEmail());
+		currentUsuario.setClave(usuario.getClave());
+		*/
+		
 		this.usuarioService.save(currentUsuario);
 		return currentUsuario;
 	}
